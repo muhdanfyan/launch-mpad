@@ -14,24 +14,25 @@ expect {
     eof
 }
 
-# 2. Deploy files via rsync
-spawn rsync -avz --exclude ".git" --exclude ".gemini" /Users/pondokit/Herd/launch-mpad/ $user@$host:/home/sipanda/launch-mpad/
-expect {
-    "password:" {
-        send "$password\r"
-        exp_continue
-    }
-    eof
-}
-
 # 3. Create/Update Nginx config for launch.mpad.online
-# We'll also try to run certbot if it's available
 spawn ssh $user@$host -t "sudo bash -c 'cat > /etc/nginx/sites-available/launch-mpad <<EOF
 server {
     listen 80;
     server_name launch.mpad.online;
+    return 301 https://\\\$host\\\$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name launch.mpad.online;
+
     root /home/sipanda/launch-mpad;
     index index.html;
+
+    ssl_certificate /etc/letsencrypt/live/launch.mpad.online/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/launch.mpad.online/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
         try_files \\\$uri \\\$uri/ /index.html;
@@ -52,4 +53,5 @@ expect {
     }
     eof
 }
+
 
