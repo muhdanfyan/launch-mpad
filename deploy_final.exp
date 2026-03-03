@@ -1,0 +1,17 @@
+#!/usr/bin/expect -f
+set timeout 120
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+# 1. Sync files via SCP (Deploy final logic and show.html)
+spawn scp -r /Users/pondokit/Herd/launch-mpad/. $user@$host:/home/sipanda/launch-mpad/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+puts "✅ Final Deployment Success!"

@@ -14,8 +14,9 @@ echo "🚀 Starting Deployment to launch.mpad.online..."
 git add .
 git commit -m "Elite Design Final Update" || echo "No changes to commit"
 
-# 2. Sync files using rsync (Fastest for static sites)
-echo "📦 Syncing files to VPS..."
+# 2. Sync files using rsync
+echo "📦 Creating remote directory and syncing files..."
+ssh $USER@$HOST "mkdir -p $REMOTE_PATH"
 rsync -avz --exclude '.git' --exclude '.github' ./ $USER@$HOST:$REMOTE_PATH
 
 # 3. Success message

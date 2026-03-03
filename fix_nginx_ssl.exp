@@ -1,0 +1,46 @@
+#!/usr/bin/expect -f
+set timeout 120
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+# Update Nginx config for launch.mpad.online with SSL (snakeoil for Cloudflare proxy)
+spawn ssh $user@$host -t "sudo bash -c 'cat > /etc/nginx/sites-available/launch-mpad <<EOF
+server {
+    listen 80;
+    server_name launch.mpad.online;
+    root /home/sipanda/launch-mpad;
+    index index.html;
+
+    location / {
+        try_files \\\$uri \\\$uri/ /index.html;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name launch.mpad.online;
+    root /home/sipanda/launch-mpad;
+    index index.html;
+
+    ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+    ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+
+    location / {
+        try_files \\\$uri \\\$uri/ /index.html;
+    }
+}
+EOF
+nginx -t && systemctl reload nginx
+'"
+expect {
+    "password for sipanda:" {
+        send "$password\r"
+        exp_continue
+    }
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}

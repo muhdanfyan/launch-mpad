@@ -1,0 +1,19 @@
+#!/usr/bin/expect -f
+set timeout 30
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+spawn ssh $user@$host "grep -r 'server_name' /etc/nginx/sites-enabled/ && ls -la /etc/nginx/sites-enabled/"
+expect "password:"
+send "$password\r"
+expect eof
+
+spawn ssh $user@$host "sudo certbot certificates"
+expect {
+    "password for sipanda:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}

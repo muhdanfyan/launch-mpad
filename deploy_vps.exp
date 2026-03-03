@@ -1,0 +1,53 @@
+#!/usr/bin/expect -f
+set timeout 120
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+# 1. Create remote directory
+spawn ssh $user@$host "mkdir -p /home/sipanda/launch-mpad"
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+# 2. Deploy files via SCP
+spawn scp -r /Users/pondokit/Herd/launch-mpad/. $user@$host:/home/sipanda/launch-mpad/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+# 3. Create Nginx config for launch.mpad.online
+spawn ssh $user@$host -t "sudo bash -c 'cat > /etc/nginx/sites-available/launch-mpad <<EOF
+server {
+    listen 80;
+    server_name launch.mpad.online;
+    root /home/sipanda/launch-mpad;
+    index index.html;
+
+    location / {
+        try_files \\\$uri \\\$uri/ /index.html;
+    }
+}
+EOF
+ln -sf /etc/nginx/sites-available/launch-mpad /etc/nginx/sites-enabled/
+nginx -t && systemctl reload nginx
+'"
+expect {
+    "password for sipanda:" {
+        send "$password\r"
+        exp_continue
+    }
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}

@@ -37,5 +37,8 @@ $('#countdown').countdown({
 			.append("<div><strong>" + this.leadingZeros(data.hours, 2) + "</strong><span>Jam</span></div>")
 			.append("<div><strong>" + this.leadingZeros(data.min, 2) + "</strong><span>Menit</span></div>")
 			.append("<div><strong>" + this.leadingZeros(data.sec, 2) + "</strong><span>Detik</span></div>");
+	},
+	onfinish: function () {
+		window.location.href = 'show.html';
 	}
 });

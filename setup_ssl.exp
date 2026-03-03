@@ -1,0 +1,28 @@
+#!/usr/bin/expect -f
+set timeout 300
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+spawn ssh $user@$host
+expect "password:"
+send "$password\r"
+expect "$ "
+
+send "sudo certbot --nginx -d launch.mpad.online --non-interactive --agree-tos --email bapenda@baubaukota.go.id\r"
+expect {
+    "password for sipanda:" {
+        send "$password\r"
+        exp_continue
+    }
+    "Congratulations!" {
+        send_user "\n✅ SSL Setup Successful!\n"
+    }
+    "Failed authorization" {
+        send_user "\n❌ DNS/Authorization Failed!\n"
+    }
+    "$ "
+}
+
+send "exit\r"
+expect eof
