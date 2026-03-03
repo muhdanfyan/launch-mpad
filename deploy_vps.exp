@@ -14,6 +14,16 @@ expect {
     eof
 }
 
+# 2. Deploy files via rsync
+spawn rsync -avz --exclude ".git" --exclude ".gemini" /Users/pondokit/Herd/launch-mpad/ $user@$host:/home/sipanda/launch-mpad/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
 # 3. Create/Update Nginx config for launch.mpad.online
 spawn ssh $user@$host -t "sudo bash -c 'cat > /etc/nginx/sites-available/launch-mpad <<EOF
 server {
