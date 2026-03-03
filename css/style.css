@@ -291,19 +291,21 @@ h2 {
 	backdrop-filter: blur(50px);
 	-webkit-backdrop-filter: blur(50px);
 	border: 1px solid rgba(255, 255, 255, 1);
-	padding: 170px 140px;
+	padding: 5vh 5vw;
 	border-radius: 40px;
 	box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.1);
 	margin: 20px auto;
+	width: 95vw;
+	max-width: 1400px;
 }
 
 #countdown div {
-	margin: 0 100px;
+	margin: 0 2vw;
 	text-align: center;
 }
 
 #countdown div strong {
-	font-size: 375px;
+	font-size: 15vw;
 	font-weight: 900;
 	color: #0f172a;
 	line-height: 1;
@@ -313,7 +315,7 @@ h2 {
 }
 
 #countdown div span {
-	font-size: 55px;
+	font-size: 2.5vw;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
@@ -453,7 +455,11 @@ h2 {
 	}
 
 	#countdown div strong {
-		font-size: 220px;
+		font-size: 18vw;
+	}
+
+	#countdown div span {
+		font-size: 3vw;
 	}
 
 	#countdown div {
@@ -479,14 +485,12 @@ h2 {
 		font-size: 36px;
 	}
 
-	#countdown {
-		padding: 30px 20px;
-		border-radius: 25px;
-		flex-wrap: wrap;
+	#countdown div strong {
+		font-size: 20vw;
 	}
 
-	#countdown div strong {
-		font-size: 180px;
+	#countdown div span {
+		font-size: 4vw;
 	}
 
 	#countdown div {
@@ -513,7 +517,11 @@ h2 {
 	}
 
 	#countdown div strong {
-		font-size: 130px;
+		font-size: 22vw;
+	}
+
+	#countdown div span {
+		font-size: 5vw;
 	}
 
 	.mpad-hero-logo {
