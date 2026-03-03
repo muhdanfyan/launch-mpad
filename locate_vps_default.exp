@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+set timeout 60
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+spawn ssh $user@$host
+expect "password:"
+send "$password\r"
+expect "$ "
+
+send "grep -l \"default_server\" /etc/nginx/sites-enabled/*\r"
+expect "$ "
+
+send "grep \"server_name\" /etc/nginx/sites-enabled/mpad-frontend\r"
+expect "$ "
+
+send "cat /etc/nginx/sites-available/mpad-frontend\r"
+expect "$ "
+
+send "exit\r"
+expect eof

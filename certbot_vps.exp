@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+set timeout 300
+set password "Sipanda123#"
+set host "157.10.252.74"
+set user "sipanda"
+
+spawn ssh $user@$host -t "sudo certbot --nginx -d launch.mpad.online --non-interactive --agree-tos -m bapenda@baubaukota.go.id --redirect"
+expect {
+    "password for sipanda:" {
+        send "$password\r"
+        exp_continue
+    }
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
